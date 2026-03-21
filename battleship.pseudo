@@ -1,0 +1,278 @@
+class Ship(){
+
+    constructor(type, length){
+
+        this.type = type
+        this.length  = length
+        this.hits = 0
+    }
+
+    hit(){
+
+         ++this.hits
+    }
+
+    isSunk(){
+
+        if(this.hits == this.length) return true
+        else return false
+
+    }
+
+
+}
+
+
+
+class Gameboard {
+    constructor() {
+
+        this.ships = [array of {ship : shipObject, shipCoordinates : coordinateArray}]
+        this.attackedCoordinates = []
+        this.missedCoordinates = []
+
+        
+    }
+
+
+    private methods:
+
+
+    placedShipCoordinates(){
+
+        placedShipCoordinates = []
+
+        this.ships.forEach(ship=>
+            placedShipCoordinates.push(ship.shipCoordinates))
+
+            return placedShipCoordinates.flat()
+    }
+
+    overlappingCoordinates(coordinateArray){
+
+        existingCoordinates = placedShipCoordinates()
+
+        for(let i =0; i < existingCoordinates.length; i++){
+
+            for(j=0; j< coordinateArray.length; j++){
+
+                if(coordinateArray[j][0] == existingCoordinates[i][0] && coordinateArray[j][1] == existingCoordinates[i][1]) return true
+            }
+            
+        }
+        return false
+
+        
+    }
+
+    validCoordinatesArray(coordinateArray){
+
+
+        return !(coordinateArray.some(coordinate =>
+            
+            coordinate[0]<0 || coordinate[0]>9 || coordinate[1]<0 || coordinate[1]>9
+
+        ))
+    }
+
+
+    matchCoordinatesToArray(attackCoordinates, coordinateArray){
+
+        for(i= 0; i<coordinateArray.length; i++){
+
+        if(coordinateArray[i][0] == attackCoordinates[0] && coordinateArray[i][1] == attackCoordinates[1]) return true
+        }
+        return false
+    }
+
+    equalCoordaintees(coordinateOne, coordinateTwo){
+
+        if(coordinateOne[0] == coordinateTwo[0] && coordinateOne[1] == coordinateTwo[1]) return true
+        else return false
+    }
+
+    public methods:
+
+    placeShip(startCoordinate, currentShip, direction){
+
+        if startCoordinate is not valid return new Error("Enter Valid Coordaintes")
+
+        if(direction != "horizontal" && direction != "vertical") return new Error("Input valid direction")
+
+        if currentShip is not a "type" of Ship Object return new Error("Enter valid ship")
+    
+        coordinateArray = []
+
+        for(i =0, i < currentShip.length, i++){
+
+            if(direction == "horizontal"){
+
+                coordinateArray.push([startCoordinate[0]+i, startCoordinate[1]])
+            }
+
+            if(direction == "vertical"){
+
+                coordinateArray.push([startCoordinate[0], startCoordinate[1]+i])
+            }
+        }
+
+            if(#this.validCoordinatesArray(coordinateArray)&& !#this.overlappingCoordinates(coordinateArray)){
+
+                this.ships.push({ship : currentShip, shipCoordinates : coordinateArray})
+            } else{
+
+                return new Error ("Place Ship Again!")
+            }
+
+    }
+
+
+    recieveAttack(attackCoordinates){
+
+
+        if attackCoordinates is less than zero and greater than nine, return "Input valid coordinates"
+
+
+        then, check if coordinates have already been attacked?
+
+        if (matchCoordinatesToArray(attackCoordinates, this.attackedCoordinates) or matchCoordinatesToArray(attackCoordinates, this.missedCoordinates))return "Coordaintes have been attacked"
+
+
+        then, after checking coordinates are valid and have not been hit, check if the userinput cooridnates are hitting one of the ships?
+
+        const attackedShip = this.ships.find(ship => matchCoordinatesToArray(attackCoordinates, ship.shipCoordinates))
+        
+
+        ship has been hit, record the hit and push log it in an array only if ship is not sunk, return with "hit"
+        if(attackedShip != undefined && !attackedShip.ship.isSunk()){
+
+            attackedShip.ship.hit()
+
+            this.attackedCoordinates.push(attackCoordinates)
+
+            return "hit"
+
+        
+        } 
+        
+        ship has not been hit and log it in a different array return with "miss"
+        else{
+
+            this.missedCoordinates.push(attackCoordinates)
+
+            return "miss"
+
+
+        }
+
+    }
+
+    
+    allShipsSunk(){
+
+    loop though this.ships using every ship =>  ship.ship.isSunk()
+    }
+
+    
+
+    resetGameBoard(){
+
+    
+        empty arrays this.ships, this.attackedCoordinates, this.missedCoordinates and this.sunkShips = []
+    }
+
+
+}
+
+
+class Player{
+
+    constructor(name){
+
+        this.name = name
+        this.gameboard = new Gameboard()
+        this.isComputer = false
+        this.computerAttackedCoordinates = []
+    }
+
+    generateAttackCoordinates(){
+
+        
+
+        generate random x and y cooridnate usig Math.floor and Math.random x 10. assing it to a variable coordinate 
+
+        if !checkComputerAttackCoorindates(coordinate) push coordinate into computer attackedCoordinates and  return [x,y]
+    }
+
+    checkComputerAttackCoorindates(inputCoordinates){
+
+        if ocmputerAttackedCoordinates array is not empty, loop through each coordinate in the array using .some(coordinate  => coordinate[0]== inputCoordinates[0] and
+            coordinate[1]== inputCoordinates[1])
+    }
+
+    attackPlayer(playerTwo, attackCoordinate){
+
+        if(isComputer) playerTwo.gameboard.recieveAttack(this.generateAttackCoordinates())
+
+        else playerTwo.gameboard.recieveAttack(attackCoordinates)
+
+        
+    }
+
+
+}
+
+
+
+
+
+class GameController{
+
+    constructor(playerOne, playerTwo){
+
+        this.playerOne = playerOne
+        this.playerTwo = playerTwo
+        currentPlayer = playerOne
+        gameWinner = null
+
+    }
+
+    checkWinner(){
+
+        if playerOnes gameboard has all ships sunk, return gameWinner = playerTwo
+        else if playerTwos gamerboad has all ships sunk return gameWinner = playerOne
+
+        
+    }
+
+    playRound(){
+
+
+        this.checkWinner();
+
+            if !playerOne.gameboard.allShipsSunk() or !playerTwo.gameboard.allShipsSunk() {
+
+                if(currentPlayer == playerOne) {
+
+                    playerOne.attackPlayer(playerTwo, attackCoordinate)
+                    currentPlayer = playerTwo
+                    this.checkWinner()
+
+                } else {
+
+                    playerTwo.attackPlayer(playerOne, attackCoordinate)
+                    currentPlayer = playerOne
+                    this.checkWinner();
+
+
+                }
+            }
+
+    }
+    
+    
+
+
+
+
+}
