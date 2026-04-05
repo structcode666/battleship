@@ -245,7 +245,7 @@ class GameController{
         
     }
 
-    playRound(){
+    playRound(attackCoordinates = null){
 
 
         this.checkWinner();

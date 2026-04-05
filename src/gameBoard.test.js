@@ -47,7 +47,7 @@ test("checks placeShips method", ()=>{
     testGameBoard.placeShip([2,5], carrier, "horizontal");
     
 
-    expect(testGameBoard.ships).toEqual( [{ship: carrier , shipCoordinates: [[2,5],[3,5],[4,5],[5,5],[6,5]]}]);
+    expect(testGameBoard.ships).toEqual( [{ship:  carrier, shipCoordinates: [[2,5],[3,5],[4,5],[5,5],[6,5]]}]);
 
 
     testGameBoard.placeShip([7,1], battleship, "vertical");
@@ -113,3 +113,56 @@ test("checks allShips Sunk Method", ()=>{
 
     expect(testGameBoard.allShipsSunk()).toEqual(true)
 })
+
+test("checks resetGameBoard method", ()=>{
+
+    let shipOptions = [new Ship("Carrier", 5), new Ship("Battleship", 4), new Ship("Cruiser", 3), new Ship("Submarine", 3), new Ship("Destroyer", 2)]
+
+    let testGameBoard = new Gameboard () 
+    
+    const [carrier, battleship, cruiser, submarine, destroyer] = shipOptions
+
+    testGameBoard.placeShip([2,2], destroyer, "horizontal")
+
+    testGameBoard.placeShip([1,1], carrier, "horizontal")
+    testGameBoard.placeShip([5,5], submarine, "vertical")
+
+    testGameBoard.recieveAttack([2,2])
+    testGameBoard.recieveAttack([3,2])
+
+    expect((testGameBoard.ships)).toEqual([{ship: destroyer, shipCoordinates: [[2,2],[3,2]]}, {ship: carrier, shipCoordinates: [[1,1],[2,1],[3,1],[4,1], [5,1]]}, {ship: submarine, shipCoordinates: [[5,5],[5,6],[5,7]]}])
+
+    expect(testGameBoard.attackedCoordinates).toEqual([[2,2],[3,2]])
+
+
+    testGameBoard.resetGameBoard();
+
+    expect(testGameBoard.ships).toEqual([])
+    expect(testGameBoard.attackedCoordinates).toEqual([])
+
+})
+
+test("checks hasShips method", ()=>{
+
+    let shipOptions = [new Ship("Carrier", 5), new Ship("Battleship", 4), new Ship("Cruiser", 3), new Ship("Submarine", 3), new Ship("Destroyer", 2)]
+
+    let testGameBoard = new Gameboard () 
+    
+    const [carrier, battleship, cruiser, submarine, destroyer] = shipOptions
+
+    testGameBoard.placeShip([2,2], destroyer, "horizontal")
+
+    testGameBoard.placeShip([1,1], carrier, "horizontal")
+    testGameBoard.placeShip([5,5], submarine, "vertical")
+
+    expect((testGameBoard.ships)).toEqual([{ship: destroyer, shipCoordinates: [[2,2],[3,2]]}, {ship: carrier, shipCoordinates: [[1,1],[2,1],[3,1],[4,1], [5,1]]}, {ship: submarine, shipCoordinates: [[5,5],[5,6],[5,7]]}])
+
+    expect(testGameBoard.hasShipAt([3,2])).toEqual(true)
+    expect(testGameBoard.hasShipAt([4,5])).toEqual(false)
+
+
+
+
+
+})
+

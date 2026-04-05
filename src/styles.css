@@ -1,0 +1,153 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+
+  grid-template-areas: 
+    "header"
+    "main-board";
+  
+  grid-template-rows: 200px auto;
+
+  align-items: start;
+  justify-content: center;
+
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+.game-title {
+  grid-area : header;
+
+  display: flex;
+  flex-direction: row;
+  align-content: end;
+
+  
+  padding-top: 100px;
+  font-size: 32px;
+  color: #222;
+
+
+}
+
+
+.main-board {
+  grid-area: main-board;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: center;
+  align-content: flex-start;
+}
+
+.gameboard-div {
+  display: grid;
+  
+  grid-template-columns: repeat(10, 40px);
+  grid-template-rows: repeat(10, 40px);
+  gap: 2px;
+}
+
+.cell {
+  border: 1px solid #444;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.cell:hover {
+  background-color: #ddd;
+}
+
+.ship-cell {
+  background-color: #333;
+}
+
+.ships-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ship-cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #333;
+  background-color: #777;
+}
+
+.ship-cell-occupied{
+  width: 40px;
+  height: 40px;
+  border: 1px solid #333;
+  background-color: #777;
+}
+
+.ship-container {
+  display: flex;
+  gap: 2px;
+
+  padding: 4px;
+  margin: 6px;
+  transition: all 0.1s ease;
+}
+
+.ship-container.selected {
+    border: 2px solid #00bfff;
+    background-color: rgba(0, 191, 255, 0.1);
+    border-radius: 6px;
+}
+
+.ship-container:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  border: 1px solid #333;
+  background-color: white;
+}
+
+.button:hover {
+  background-color: #eee;
+}
+
+.start-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  border: 1px solid #333;
+  background-color: #f8f8f8;
+  min-width: 300px;
+}
+
+.player-input {
+  width: 220px;
+  padding: 10px 12px;
+  border: 1px solid #333;
+  font-size: 16px;
+  text-align: center;
+  background-color: white;
+}
+
+.player-input:focus {
+  outline: none;
+  border: 2px solid #555;
+}
+
+.versus {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+
+
+

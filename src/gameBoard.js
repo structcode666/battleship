@@ -1,6 +1,7 @@
 import { Ship } from "./ship"
 
 
+
 class Gameboard{
 
     constructor(){
@@ -140,9 +141,34 @@ class Gameboard{
         if(this.ships.length !=0){
 
             return this.ships.every(ship => ship.ship.isSunk())
-        } 
+        } else return false
 
         
+    }
+
+    resetGameBoard(){
+
+        this.ships = [];
+        this.attackedCoordinates = []
+        this.missedCoordinates = []
+
+
+    }
+
+    allShipsPlaced(){
+
+        if(this.ships.length == 5) return true
+        else return false
+    }
+
+    hasShipAt([x,y]){
+
+        return this.ships.some(ship=>
+
+            this.#matchCoordinatesToArray([x, y], ship.shipCoordinates)
+
+
+        )
     }
 
 }
