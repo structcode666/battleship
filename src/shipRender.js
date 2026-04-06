@@ -1,7 +1,8 @@
 import { Ship } from "./ship"
 import { Gamecontroller } from "./gameController"
+import { Player } from "./player"
 
-function renderShips(){
+function renderShips(player){
 
     const ships = [new Ship("Carrier", 5), new Ship("Battleship", 4), new Ship("Cruiser", 3), new Ship("Submarine", 3), new Ship("Destroyer", 2)]
 
@@ -10,11 +11,12 @@ function renderShips(){
 
     ships.forEach(ship=>{
 
-        let shipDiv = document.createElement("div")
-        shipDiv.classList.add(`ship-container`)
+        if(!player.gameboard.hasShip(ship)){
+            let shipDiv = document.createElement("div")
+            shipDiv.classList.add(`ship-container`)
 
 
-        for(let i=0 ; i<ship.length; i++){
+            for(let i=0 ; i<ship.length; i++){
 
 
 
@@ -26,9 +28,14 @@ function renderShips(){
             
             shipCell.dataset.i = i;
             shipDiv.appendChild(shipCell)
+            }
+
+            shipsDiv.appendChild(shipDiv)
+
+
         }
 
-        shipsDiv.appendChild(shipDiv)
+        
 
     })
 
@@ -59,12 +66,13 @@ function selectShip(gameController){
 
             //add ship selected class
             shipContainer.classList.add("selected")
+    
 
             //add style//
 
             //add selected ship to gameboard//
-            gameController.selectedShip = new Ship(shipCell.dataset.name, Number(shipCell.dataset.length))
-            console.log(gameController)
+            gameController.selectedShip = {ship: new Ship(shipCell.dataset.name, Number(shipCell.dataset.length)), orientation: "horizontal"}
+            
 
         })
     
@@ -82,10 +90,37 @@ function selectShip(gameController){
         console.log(gameController)
     }
     })
+}
+
+function renderRotatedShip(gameController){
+
+        if(gameController.selectShip != null){
+
+            window.addEventListener("keydown", (e)=>{
+
+            const selectedShip = document.querySelector(".selected")
+
+            if(e.key == "v"){
+
+                selectedShip.classList.remove("horizontal")
+
+                selectedShip.classList.add("vertical")
+
+                gameController.selectedShip.orientation = "vertical"
+            } else if(e.key == "h"){
+
+                selectedShip.classList.remove("vertical")
+                selectedShip.classList.add("horizontal")
+
+                gameController.selectedShip.orientation = "horizontal"
+            }
+    })
 
 
+        }
 
+        
 }
 
 
-export {renderShips, selectShip}
+export {renderShips, selectShip, renderRotatedShip}

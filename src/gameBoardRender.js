@@ -1,4 +1,5 @@
-import { renderShips, selectShip} from "./shipRender"
+import { renderShips, selectShip, renderRotatedShip} from "./shipRender"
+import { addMainEventListeners, addGlobalEventListeners} from "./eventListeneners"
 
 function createGameBoard(player){
     
@@ -45,7 +46,7 @@ function renderPlayerScreen(player, onNext, gameController){
     
 
     //render ships//
-    let shipsDiv = renderShips()
+    let shipsDiv = renderShips(player)
     mainBody.appendChild(shipsDiv)
 
     //create next button//
@@ -55,10 +56,9 @@ function renderPlayerScreen(player, onNext, gameController){
     mainBody.appendChild(nextButton)
 
     //ship and cell selection//
-    selectCell(gameController, player);
-    selectShip(gameController);
-
-
+    // selectCell(gameController, player);
+    // selectShip(gameController);
+    // renderRotatedShip(gameController)
 
     //handle next screen prompt//
     nextButton.addEventListener('click', ()=>{
@@ -72,6 +72,10 @@ function renderBattleBoard(gameController){
 
     const mainBody = document.querySelector(".main-board")
     mainBody.innerHTML = ""
+
+    const gameTitle = document.querySelector(".game-title")
+    gameTitle.innerHTML = `BEGIN BATTLE - ${gameController.currentPlayer.name}'s turn`
+
 
     let playerBoard = createGameBoard(gameController.playerOne)
 
@@ -97,10 +101,8 @@ function checkGameState(gameController){
         if(gameController.playerOne.gameboard.allShipsPlaced() && gameController.gamePhase == "playerOne-setup") gameController.gamePhase ="battle"
 
     }
-
-
-
 }
+
 
 function onNext(gameController){
 
@@ -113,7 +115,7 @@ function renderScreen(gameController){
 
     if(gameController.gamePhase == "playerOne-setup") {
 
-        return renderPlayerScreen(gameController.playerOne, onNext, gameController)
+        renderPlayerScreen(gameController.playerOne, onNext, gameController)
     
     } else if(gameController.gamePhase == "playerTwo-setup") {
         renderPlayerScreen(gameController.playerTwo, onNext, gameController)
@@ -126,38 +128,16 @@ function renderScreen(gameController){
 function initializeGame(gameController){
 
     renderPlayerScreen(gameController.playerOne, onNext, gameController)
+    addMainEventListeners(gameController, gameController.currentPlayer)
+    addGlobalEventListeners(gameController, gameController.currentPlayer)
 
 
 }
 
-function selectCell(gameController, player){
-
-    const playerGameBoard = document.querySelector(".gameboard-div")
-
-
-    playerGameBoard.addEventListener('click', (e)=>{
-
-        const gameBoardCell = e.target.closest(".cell")
-
-        if(!gameBoardCell) return
-
-        if(gameController.selectedShip !=null){
-            player.gameboard.placeShip([Number(gameBoardCell.dataset.x), Number(gameBoardCell.dataset.y)], gameController.selectedShip, "horizontal")
-
-            console.log(gameController)
-
-            // gameController.selectedShip = null;
-
-            renderScreen(gameController)
-        }      
-
-
-    })
-}
 
 
 
 
 
-export { initializeGame}
+export { initializeGame, renderScreen}
 

@@ -171,6 +171,11 @@ class Gameboard{
         )
     }
 
+    hasShip(currentShip){
+
+        return this.#usedShip(currentShip)
+    }
+
 }
 
 export {Gameboard}

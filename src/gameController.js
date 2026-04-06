@@ -30,14 +30,24 @@ class Gamecontroller{
                 this.playerOne.attackPlayer(this.playerTwo, attackCoordinates)
                 this.currentPlayer = this.playerTwo
                 this.checkWinner()
-            }
-
-            if(this.currentPlayer == this.playerTwo){
+            } else if(this.currentPlayer == this.playerTwo){
 
                 this.playerTwo.attackPlayer(this.playerOne, attackCoordinates)
                 this.currentPlayer = this.playerOne
                 this.checkWinner()
             }
+        }
+    }
+
+    changeCurrentPlayer(){
+
+        if(this.playerOne.gameboard.ships.length == 5){
+
+            this.currentPlayer = this.playerTwo
+        }
+        if(this.playerOne.gameboard.ships.length == 5 &&this.playerTwo.gameboard.ships.length == 5){
+
+            this.currentPlayer = this.playerOne
         }
     }
 
