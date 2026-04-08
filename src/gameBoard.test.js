@@ -158,11 +158,26 @@ test("checks hasShips method", ()=>{
     expect((testGameBoard.ships)).toEqual([{ship: destroyer, shipCoordinates: [[2,2],[3,2]]}, {ship: carrier, shipCoordinates: [[1,1],[2,1],[3,1],[4,1], [5,1]]}, {ship: submarine, shipCoordinates: [[5,5],[5,6],[5,7]]}])
 
     expect(testGameBoard.hasShipAt([3,2])).toEqual(true)
-    expect(testGameBoard.hasShipAt([4,5])).toEqual(false)
+    expect(testGameBoard.hasShip([4,5])).toEqual(false)
 
 
 
 
 
 })
+
+
+test("checks placeComputerShips method", ()=>{
+
+    let shipOptions = [new Ship("Carrier", 5), new Ship("Battleship", 4), new Ship("Cruiser", 3), new Ship("Submarine", 3), new Ship("Destroyer", 2)]
+
+    let testGameBoard = new Gameboard () 
+
+    testGameBoard.placeComputerShips()
+
+    expect((testGameBoard.ships.length)).toEqual(5)
+
+
+})
+
 

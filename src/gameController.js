@@ -25,16 +25,31 @@ class Gamecontroller{
 
         if(this.gameWinner == null){
 
+            let result
+
             if(this.currentPlayer == this.playerOne){
 
-                this.playerOne.attackPlayer(this.playerTwo, attackCoordinates)
-                this.currentPlayer = this.playerTwo
+                result = this.playerOne.attackPlayer(this.playerTwo, attackCoordinates)
+
+                if(result instanceof Error) return result
+
                 this.checkWinner()
+                if(!this.gameWinner) this.currentPlayer = this.playerTwo
+
+                return result
+
+                
+                
             } else if(this.currentPlayer == this.playerTwo){
 
-                this.playerTwo.attackPlayer(this.playerOne, attackCoordinates)
-                this.currentPlayer = this.playerOne
+                result = this.playerTwo.attackPlayer(this.playerOne, attackCoordinates)
+                if(result instanceof Error) return result
                 this.checkWinner()
+                if(!this.gameWinner)this.currentPlayer = this.playerOne
+
+                return result
+                
+                
             }
         }
     }

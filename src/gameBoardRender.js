@@ -1,5 +1,5 @@
 import { renderShips, selectShip, renderRotatedShip} from "./shipRender"
-import { addMainEventListeners, addGlobalEventListeners} from "./eventListeneners"
+import { addMainEventListeners, addGlobalEventListeners, battleEventListeners} from "./eventListeneners"
 
 function createGameBoard(player){
     
@@ -11,7 +11,13 @@ function createGameBoard(player){
 
         for(let x=0 ; x<10; x++){
 
+
+
+
             let cell = document.createElement("div")
+            cell.dataset.x = x;
+            cell.dataset.y = y;
+            cell.dataset.player = player.name
 
             cell.classList.add("cell")
 
@@ -19,10 +25,19 @@ function createGameBoard(player){
 
                 cell.classList.add("ship-cell-occupied")
             }
+
+            if(player.gameboard.hitCoordinate([x,y])) {
+
+                cell.classList.add("hit")
+            }
+            if(player.gameboard.missedCoordinate([x,y])) {
+
+                cell.classList.add("miss")
+            }
             
-            cell.dataset.x = x;
-            cell.dataset.y = y;
-            cell.dataset.player = player.name
+            
+            
+
             gameBoard.appendChild(cell)
         }
     }
@@ -74,7 +89,9 @@ function renderBattleBoard(gameController){
     mainBody.innerHTML = ""
 
     const gameTitle = document.querySelector(".game-title")
-    gameTitle.innerHTML = `BEGIN BATTLE - ${gameController.currentPlayer.name}'s turn`
+
+    if(!gameController.gameWinner) gameTitle.innerHTML = `BEGIN BATTLE - ${gameController.currentPlayer.name}'s turn`
+    if(gameController.gameWinner) gameTitle.innerHTML = `${gameController.gameWinner.name}'s Won`
 
 
     let playerBoard = createGameBoard(gameController.playerOne)
@@ -97,8 +114,19 @@ function checkGameState(gameController){
         else if(gameController.playerTwo.gameboard.allShipsPlaced() && gameController.gamePhase == "playerTwo-setup") gameController.gamePhase = "battle"
     } else if (gameController.playerTwo.isComputer){
 
+        
 
-        if(gameController.playerOne.gameboard.allShipsPlaced() && gameController.gamePhase == "playerOne-setup") gameController.gamePhase ="battle"
+
+        if(gameController.playerOne.gameboard.allShipsPlaced() && gameController.gamePhase == "playerOne-setup") {
+            //place computer ships//
+            gameController.playerTwo.gameboard.placeComputerShips()
+
+            //reset current player to playerOne//
+            gameController.currentPlayer = gameController.playerOne
+
+            //change game phase to battle!//
+            gameController.gamePhase ="battle"
+        }
 
     }
 }
@@ -108,6 +136,8 @@ function onNext(gameController){
 
     checkGameState(gameController)
     renderScreen(gameController)
+    console.log(gameController.gamePhase)
+    console.log(gameController.currentPlayer)
 
 }
 
@@ -122,6 +152,7 @@ function renderScreen(gameController){
     } else if(gameController.gamePhase == "battle") {
 
         renderBattleBoard(gameController)
+        battleEventListeners(gameController)
     }
 }
 
@@ -131,7 +162,6 @@ function initializeGame(gameController){
     addMainEventListeners(gameController, gameController.currentPlayer)
     addGlobalEventListeners(gameController, gameController.currentPlayer)
 
-
 }
 
 
@@ -139,5 +169,7 @@ function initializeGame(gameController){
 
 
 
-export { initializeGame, renderScreen}
+
+
+export { initializeGame, renderScreen, renderBattleBoard}
 

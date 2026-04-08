@@ -77,6 +77,24 @@ class Gameboard{
 
     }
 
+    #generateRandomCoordinates(){
+
+        return [Math.floor(Math.random()*10), Math.floor(Math.random()*10)]
+
+    }
+
+    #generateRandomDirection(){
+
+        const options = ["horizontal", "vertical"]
+
+        const randomIndex = Math.floor(Math.random()*options.length)
+        return options[randomIndex]
+    }
+
+    
+
+
+
     placeShip(startCoordinate, currentShip, direction){
 
         if(!this.#validCoordinates(startCoordinate)) return new Error("Enter Valid Cooridnates")
@@ -112,6 +130,31 @@ class Gameboard{
         
     }
 
+    placeComputerShips(){
+        const ships = [new Ship("Carrier", 5), new Ship("Battleship", 4), new Ship("Cruiser", 3), new Ship("Submarine", 3), new Ship("Destroyer", 2)]
+
+            ships.forEach(ship=> {
+
+                let shipsPlaced = false;
+
+                while(!shipsPlaced){
+
+                let result = this.placeShip(this.#generateRandomCoordinates(), ship, this.#generateRandomDirection());
+                if(!(result instanceof Error)) shipsPlaced = true
+
+            }
+
+                
+
+            })
+
+
+        
+        
+        
+
+    }
+
     recieveAttack(attackCoordinates){
 
         if(!this.#validCoordinates(attackCoordinates)) return new Error("Enter Valid Coordinates!")
@@ -134,6 +177,21 @@ class Gameboard{
         }
 
         
+    }
+
+    hitCoordinate(attackCoordinates){
+
+        return this.#matchCoordinatesToArray(attackCoordinates, this.attackedCoordinates)
+
+
+    }
+
+
+    missedCoordinate(attackCoordinates){
+
+        return this.#matchCoordinatesToArray(attackCoordinates, this.missedCoordinates)
+
+
     }
 
     allShipsSunk(){

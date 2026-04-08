@@ -17,20 +17,16 @@ body {
 }
 
 .game-title {
-  grid-area : header;
+  grid-area: header;
 
   display: flex;
   flex-direction: row;
   align-content: end;
 
-  
   padding-top: 100px;
   font-size: 32px;
   color: #222;
-
-
 }
-
 
 .main-board {
   grid-area: main-board;
@@ -44,7 +40,6 @@ body {
 
 .gameboard-div {
   display: grid;
-  
   grid-template-columns: repeat(10, 40px);
   grid-template-rows: repeat(10, 40px);
   gap: 2px;
@@ -60,8 +55,34 @@ body {
   background-color: #ddd;
 }
 
+/* Ships */
 .ship-cell {
   background-color: #333;
+}
+
+.ship-cell-occupied {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #333;
+  background-color: #777;
+}
+
+/* FIXED: hit & miss styling */
+.cell.hit {
+  background-color: red;
+}
+
+.cell.miss {
+  background-color: lightblue;
+}
+
+/* prevent hover overriding hit/miss */
+.cell.hit:hover {
+  background-color: red;
+}
+
+.cell.miss:hover {
+  background-color: lightblue;
 }
 
 .ships-container {
@@ -77,27 +98,18 @@ body {
   background-color: #777;
 }
 
-.ship-cell-occupied{
-  width: 40px;
-  height: 40px;
-  border: 1px solid #333;
-  background-color: #777;
-}
-
 .ship-container {
   display: flex;
   gap: 2px;
-  
-
   padding: 4px;
   margin: 6px;
   transition: all 0.1s ease;
 }
 
 .ship-container.selected {
-    border: 2px solid #00bfff;
-    background-color: rgba(0, 191, 255, 0.1);
-    border-radius: 6px;
+  border: 2px solid #00bfff;
+  background-color: rgba(0, 191, 255, 0.1);
+  border-radius: 6px;
 }
 
 .ship-container:hover {
@@ -105,8 +117,7 @@ body {
   cursor: pointer;
 }
 
-.vertical{
-
+.vertical {
   display: flex;
   flex-direction: column;
 }
@@ -154,7 +165,3 @@ body {
   font-weight: bold;
   color: #333;
 }
-
-
-
-

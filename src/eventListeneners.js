@@ -1,7 +1,7 @@
 import { Player } from "./player";
 import { Gamecontroller } from "./gameController";
 import { Ship } from "./ship";
-import {renderScreen} from "./gameBoardRender"
+import {renderScreen, renderBattleBoard} from "./gameBoardRender"
 
 
 
@@ -38,11 +38,12 @@ function addMainEventListeners(gameController, player){
             gameController.currentPlayer.gameboard.placeShip([Number(gameBoardCell.dataset.x), Number(gameBoardCell.dataset.y)], gameController.selectedShip.ship, gameController.selectedShip.orientation)
             gameController.selectedShip = null;
             gameController.changeCurrentPlayer();
-            console.log(gameController.currentPlayer)
             renderScreen(gameController)
         } 
 
         }
+
+
 
     })
 
@@ -103,4 +104,50 @@ function addGlobalEventListeners(gameController){
 
 }
 
-export {addMainEventListeners, addGlobalEventListeners}
+
+function battleEventListeners(gameController){
+
+    const mainBoard = document.querySelector(`.main-board`)
+
+    let result
+
+    mainBoard.addEventListener('click', (e)=>{
+        if(gameController.currentPlayer == gameController.playerTwo){
+            const cell = e.target.closest(`.cell[data-player="${gameController.playerOne.name}"]`)
+            if(!cell) return
+            result = gameController.playOneRound([Number(cell.dataset.x), Number(cell.dataset.y)])
+            if(result instanceof Error){
+                console.log(result.message)
+            }
+
+            renderBattleBoard(gameController)
+        
+            console.log(gameController.gameWinner)
+
+            
+        }
+
+
+        if(gameController.currentPlayer == gameController.playerOne){
+            const cell = e.target.closest(`.cell[data-player="${gameController.playerTwo.name}"]`)
+
+            if(!cell) return
+
+            result = gameController.playOneRound([Number(cell.dataset.x), Number(cell.dataset.y)])
+            if(result instanceof Error){
+                console.log(result.message)
+            }
+
+            renderBattleBoard(gameController)
+        
+            console.log(gameController.gameWinner)
+
+            
+        }
+
+        
+        
+    })
+
+}
+export {addMainEventListeners, addGlobalEventListeners, battleEventListeners}
