@@ -107,11 +107,13 @@ function addGlobalEventListeners(gameController){
 
 function battleEventListeners(gameController){
 
-    const mainBoard = document.querySelector(`.main-board`)
+    // const gameBoard = document.querySelector(`.gameboard-div`)
+
+    // if(!gameBoard) return
 
     let result
 
-    mainBoard.addEventListener('click', (e)=>{
+    document.addEventListener('click', (e)=>{
         if(gameController.currentPlayer == gameController.playerTwo){
             const cell = e.target.closest(`.cell[data-player="${gameController.playerOne.name}"]`)
             if(!cell) return
@@ -122,11 +124,9 @@ function battleEventListeners(gameController){
 
             renderBattleBoard(gameController)
         
-            console.log(gameController.gameWinner)
-
-            
+            console.log(gameController.currentPlayer)
+   
         }
-
 
         if(gameController.currentPlayer == gameController.playerOne){
             const cell = e.target.closest(`.cell[data-player="${gameController.playerTwo.name}"]`)
@@ -138,9 +138,26 @@ function battleEventListeners(gameController){
                 console.log(result.message)
             }
 
-            renderBattleBoard(gameController)
+            if(gameController.playerTwo.isComputer && !gameController.gameWinner && gameController.currentPlayer == gameController.playerTwo) {
+                
+                setTimeout( ()=> {
+
+                    const result = gameController.playOneRound();
+
+                    if(result instanceof Error){
+
+                        console.log(result.message)
+                        return
+                    }
+                    renderBattleBoard(gameController)
+                }, 500)
+
         
-            console.log(gameController.gameWinner)
+            }
+
+            renderBattleBoard(gameController)
+            console.log(gameController.currentPlayer)
+        
 
             
         }
