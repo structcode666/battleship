@@ -91,15 +91,29 @@ function renderBattleBoard(gameController){
     const gameTitle = document.querySelector(".game-title")
 
     if(!gameController.gameWinner) gameTitle.innerHTML = `BEGIN BATTLE - ${gameController.currentPlayer.name}'s turn`
-    if(gameController.gameWinner) gameTitle.innerHTML = `${gameController.gameWinner.name}'s Won`
+    if(gameController.gameWinner) gameTitle.innerHTML = `${gameController.gameWinner.name}'s Won`;
+
+    let playerBoard = null;
+    let opponentBoard = null;
+;
+    if(gameController.currentPlayer == gameController.playerTwo) {
+
+         playerBoard = createGameBoard(gameController.playerOne)
+
+         mainBody.appendChild(playerBoard)
+    }
+
+    if(gameController.currentPlayer == gameController.playerOne) {
+
+        opponentBoard = createGameBoard(gameController.playerTwo)
+
+        mainBody.appendChild(opponentBoard)
 
 
-    let playerBoard = createGameBoard(gameController.playerOne)
+    }
 
-    let opponentBoard = createGameBoard(gameController.playerTwo)
-
-    mainBody.appendChild(playerBoard)
-    mainBody.appendChild(opponentBoard)
+    
+    
 
     // selectCell()
 
